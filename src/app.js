@@ -5,22 +5,22 @@ const app=express();
 
 //this is specific to get /user
 
-app.get("/user",(req,res)=>{
-    res.send({
-        fristname:"ashu",
-        lastname:"Yadav"
-    })
+app.use("/user",(req,res,next)=>{
+    next();
+    // res.send({
+    //     fristname:"ashu",
+    //     lastname:"Yadav"
+    // })
+},(req,res,next)=>{
+    console.log("hello");
+    next();
+  //  res.send("im the 2nd one ");
+},(req,res,next)=>{
+    console.log("hello");
+   res.send("helo im the 3rd one")
+  //  res.send("im the 2nd one ");
 })
 
-app.post("/user",(req,res)=>{
-    console.log("saving data to the database");
-    res.send({
-        fristname:"umesh",
-        lastname:"Yadav"
-    });
-}
-)
- 
 
 //this will match all the http method api calls
 app.use("/hello",(req,res)=>{
