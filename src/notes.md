@@ -5,3 +5,9 @@
 //step 3:- git init -initialsies git repo
 
 //git ignore - this helps git to ignore the node modules
+
+//github pe jake ek repo banao then connect your codes to your git push your local main branch to origin main branch in git
+
+
+//postman is for testing api,s-create a workspace>collections>test api
+
