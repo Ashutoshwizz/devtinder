@@ -3,6 +3,11 @@ const express = require('express');
 //instance of express js application
 const app=express();
 
+//calling auth module
+const {adminauth}=require('./middlewares/auth')
+
+app.use("/",adminauth);
+
 //this is specific to get /user
 
 app.use("/user",(req,res,next)=>{
