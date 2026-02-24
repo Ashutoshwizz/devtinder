@@ -11,6 +11,7 @@ app.use("/",adminauth);
 //this is specific to get /user
 
 app.use("/user",(req,res,next)=>{
+   // throw new error("dbdbdbdbdbfd");
     next();
     // res.send({
     //     fristname:"ashu",
@@ -24,6 +25,13 @@ app.use("/user",(req,res,next)=>{
     console.log("hello");
    res.send("helo im the 3rd one")
   //  res.send("im the 2nd one ");
+})
+//.handling error fpr all
+app.use("/",(err,req,res,next)=>{
+    if(err){
+        
+        res.status(401).send("something went wrong");
+    }
 })
 
 
