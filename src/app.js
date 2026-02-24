@@ -1,49 +1,40 @@
 const express = require('express');
-
+const {connectdb}=require('./config/database');
+const User = require('./models/user');
 //instance of express js application
 const app=express();
-
-//calling auth module
-const {adminauth}=require('./middlewares/auth')
-
-app.use("/",adminauth);
-
-//this is specific to get /user
-
-app.use("/user",(req,res,next)=>{
-   // throw new error("dbdbdbdbdbfd");
-    next();
-    // res.send({
-    //     fristname:"ashu",
-    //     lastname:"Yadav"
-    // })
-},(req,res,next)=>{
-    console.log("hello");
-    next();
-  //  res.send("im the 2nd one ");
-},(req,res,next)=>{
-    console.log("hello");
-   res.send("helo im the 3rd one")
-  //  res.send("im the 2nd one ");
-})
-//.handling error fpr all
-app.use("/",(err,req,res,next)=>{
-    if(err){
-        
-        res.status(401).send("something went wrong");
-    }
-})
-
-
-//this will match all the http method api calls
-app.use("/hello",(req,res)=>{
-    res.send("hello from the server");
-})
-
-
-//on this port number pur server is held
+//connecing database
+connectdb()
+.then(()=>{
+console.log("Database connection established");
+//on this port number pur server is held 
 app.listen(3000,()=>{
     console.log("sucessfully listning ");
+});
+})
+.catch((err) => {
+    console.log("Database not connection established");
+    console.log(err.message);
+});
+
+
+//adding details to database 
+app.post("/signup",async(req,res)=>{
+ //creating a new instance of the user modal
+ const user=new User({
+    firstname:"umesh",
+    lastname:"Yadav",
+    email:"umesh121@gmail.com",
+    password:"ume"
+ })
+ try{
+  await user.save();
+    res.send("user added sucsessfully");
+ }catch(err){
+    res.status(401).send("error"+err.message);
+ }
+  
+
 });
 
 
