@@ -17,16 +17,13 @@ app.listen(3000,()=>{
     console.log(err.message);
 });
 
+//now this middleware will be for all routes
+app.use(express.json()); //converts json into javascript object
 
 //adding details to database 
 app.post("/signup",async(req,res)=>{
  //creating a new instance of the user modal
- const user=new User({
-    firstname:"umesh",
-    lastname:"Yadav",
-    email:"umesh121@gmail.com",
-    password:"ume"
- })
+ const user=new User(req.body);
  try{
   await user.save();
     res.send("user added sucsessfully");
@@ -34,6 +31,19 @@ app.post("/signup",async(req,res)=>{
     res.status(401).send("error"+err.message);
  }
   
+
+});
+
+//feed api get all the users from the data base
+app.get("/feed",async(req,res)=>{
+   try{
+    const users=await User.find({});
+    res.send(users); 
+   }catch(err){
+      res.status(401).send("users not found");
+
+   }
+    
 
 });
 
@@ -45,5 +55,4 @@ app.post("/signup",async(req,res)=>{
 
 
 
-//concepts :
-//order of routes matter
+
