@@ -43,7 +43,42 @@ app.get("/feed",async(req,res)=>{
       res.status(401).send("users not found");
 
    }
-    
+});
+
+//delete perticular user
+app.delete("/user",async(req,res)=>{
+   const userid=req.body.userid;
+
+   try{
+      //User.findByIdAndDelete({_id:userid}); iska shortcut hai neeche wala
+     
+      const user=await User.findByIdAndDelete(userid);
+      res.send("user delted successfully");
+
+
+   }catch(err){
+      res.status(401).send("something went wrong");
+
+   }
+})
+
+//updates value
+app.patch("/user",async(req,res)=>{
+    const userid=req.body.userid;
+    const data =req.body;
+
+   try{
+      
+      const user=await User.findByIdAndUpdate({_id:userid},data,{
+         runValidators:true
+      });
+      res.send("user updated successfully");
+
+
+   }catch(err){
+      res.status(401).send("Update failed "+err.message);
+
+   }
 
 });
 
