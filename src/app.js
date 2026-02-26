@@ -63,9 +63,20 @@ app.delete("/user",async(req,res)=>{
 })
 
 //updates value
-app.patch("/user",async(req,res)=>{
-    const userid=req.body.userid;
+//this userid is from url 
+app.patch("/user/:userid",async(req,res)=>{
+   const userid=req.params?.userid;
+   // const userid=req.body.userid;
     const data =req.body;
+
+    const allowed_updates=["gender","age","lastname"];
+    //it checks that every key fromm data is present in allowed updates
+    const isupdatesallowed=Object.keys(data).every((k)=>{
+     return  allowed_updates.includes(k);
+    })
+    if(!isupdatesallowed){
+      return res.status(400).send("updates not possible");
+    }
 
    try{
       
