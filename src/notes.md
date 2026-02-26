@@ -15,3 +15,4 @@
 //and we use npm libraries mongoose-ye uske sare packages la deta hai
 //create schema `in db
 //npm i validator for santising email data
+//nmp i bcrypt for hashing password

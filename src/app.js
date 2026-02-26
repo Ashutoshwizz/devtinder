@@ -1,6 +1,8 @@
 const express = require('express');
 const {connectdb}=require('./config/database');
 const User = require('./models/user');
+const {validatesignupdata,validateemail}=require("./utils/validation")
+const bcrypt = require('bcrypt');
 //instance of express js application
 const app=express();
 //connecing database
@@ -22,13 +24,22 @@ app.use(express.json()); //converts json into javascript object
 
 //adding details to database 
 app.post("/signup",async(req,res)=>{
+    try{
+//first thing should be validating data
+validatesignupdata(req);
+
+//encrypt password
+const {firstname,lastname,email,password}=req.body;
+
+const passwordhash = await bcrypt.hash(password,10); 
+
  //creating a new instance of the user modal
- const user=new User(req.body);
- try{
+ const user=new User({firstname,lastname,email,password: passwordhash});
+
   await user.save();
     res.send("user added sucsessfully");
  }catch(err){
-    res.status(401).send("error"+err.message);
+    res.status(401).send("Error: "+err.message);
  }
   
 
@@ -93,6 +104,34 @@ app.patch("/user/:userid",async(req,res)=>{
 
 });
 
+app.post("/login",async(req,res)=>{
+   try{
+      //first thing extract emailid and password
+      const {email,password}=req.body;
+
+      //validating email
+      validateemail(email);
+
+      //to check is there any person with this email
+      const user=await User.findOne({email:email});
+      if(!user){
+         throw new Error("invalid credentials")
+      }
+
+      //checking is password iscooerct by decrpt
+      const isPasswordValid=await bcrypt.compare(password,user.password)
+
+          if(!isPasswordValid){
+         throw new Error("invalid credentials");
+      }else{
+         res.send("login successfull!!")
+      }
+
+   }catch(err){
+    res.status(401).send("Error: "+err.message);
+ }
+
+})
 
 
 
