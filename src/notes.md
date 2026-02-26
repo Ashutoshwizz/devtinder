@@ -14,3 +14,4 @@
 //connect database to your cluster(baaplike school>classdata>teachersdata>stafdata and all)
 //and we use npm libraries mongoose-ye uske sare packages la deta hai
 //create schema `in db
+//npm i validator for santising email data
