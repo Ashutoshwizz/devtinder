@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcrypt');
 
 //creating schema
 
@@ -52,6 +53,28 @@ const validator = require('validator');
     },{
         timestamps:true
     });
+
+    // its like helper method for this code  const token=await jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
+
+    userschema.methods.getjwt= async function(){
+        //its referencing to the perticular user  and this keyword only works with normalfuncction not arrow functions
+        const user=this;  
+        const token=await jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
+   
+    }
+
+    //tovalidate password bcrypt
+    userschema.methods.validatepassword=async function(passwordbyuser){
+        const user=this;
+        
+         const isPasswordValid=await bcrypt.compare(passwordbyuser,user.password)
+
+         return isPasswordValid;
+
+
+    }
+
+
 
 //namemodel,nameschema
    const User= mongoose.model("User",userschema);

@@ -130,16 +130,21 @@ app.post("/login",async(req,res)=>{
       }
 
       //checking is password iscooerct by decrpt
-      const isPasswordValid=await bcrypt.compare(password,user.password)
+      // const isPasswordValid=await bcrypt.compare(password,user.password)
+       const isPasswordValid= await user.validatepassword(passwordbyuser);
+
 
           if(!isPasswordValid){
          throw new Error("invalid credentials");
       }else{
          //when the email and password are validated now is time to generrate cookies
-         //create a jwt token 
+         //create a jwt token  
          //first thing id of data field,secret key only server knows
-         const token=await jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
-       //  console.log(token);
+         const token=await user.getjwt();
+
+         
+         // jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
+       
 
 
          //add token to co okie and send response to user
