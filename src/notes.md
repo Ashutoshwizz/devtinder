@@ -16,3 +16,5 @@
 //create schema `in db
 //npm i validator for santising email data
 //nmp i bcrypt for hashing password
+//after generating cookies we need acookie parsermodule
+//install json webtoken //for accesing

@@ -3,8 +3,19 @@ const {connectdb}=require('./config/database');
 const User = require('./models/user');
 const {validatesignupdata,validateemail}=require("./utils/validation")
 const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const {userauth}=require('./middlewares/auth');
+
+
+
+
 //instance of express js application
 const app=express();
+
+//when ever the cookie come it gets parsed
+app.use(cookieParser());
+
 //connecing database
 connectdb()
 .then(()=>{
@@ -104,7 +115,7 @@ app.patch("/user/:userid",async(req,res)=>{
 
 });
 
-app.post("/login",async(req,res)=>{
+app.post("/login",async(req,res)=>{ 
    try{
       //first thing extract emailid and password
       const {email,password}=req.body;
@@ -124,7 +135,18 @@ app.post("/login",async(req,res)=>{
           if(!isPasswordValid){
          throw new Error("invalid credentials");
       }else{
-         res.send("login successfull!!")
+         //when the email and password are validated now is time to generrate cookies
+         //create a jwt token 
+         //first thing id of data field,secret key only server knows
+         const token=await jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
+       //  console.log(token);
+
+
+         //add token to co okie and send response to user
+
+
+         res.cookie("token",token);
+         res.send("login successfull!!");
       }
 
    }catch(err){
@@ -132,6 +154,17 @@ app.post("/login",async(req,res)=>{
  }
 
 })
+
+app.get("/profile",userauth,async(req,res)=>{
+   try{
+
+   res.send(req.user);
+
+   }catch(err){
+    res.status(401).send("Error: "+err.message);
+ }
+})
+
 
 
 

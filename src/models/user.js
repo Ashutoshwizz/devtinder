@@ -30,7 +30,7 @@ const validator = require('validator');
           if(!validator.isStrongPassword(value)){
             throw new Error("Password is weak"+value);
           }}
-
+  
     },
     age:{
         type:Number,
