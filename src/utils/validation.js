@@ -17,9 +17,22 @@ const validatesignupdata =(req)=>{
     }
 }
 
+const validateeditprofiledata =(req)=>{
+
+const allowededits=["gender","age","lastname"];
+     const isallowededits=Object.keys(req.body).every((field)=>{
+     return  allowededits.includes(field);
+    })
+
+    return isallowededits;
+
+
+}
+
 const validateemail=(email)=>{
+
     if(!validator.isEmail(email) ) {
         throw new Error("Provide valid email")}
 }
 
-module.exports={validatesignupdata,validateemail}
+module.exports={validatesignupdata,validateemail,validateeditprofiledata}
