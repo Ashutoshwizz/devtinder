@@ -131,7 +131,7 @@ app.post("/login",async(req,res)=>{
 
       //checking is password iscooerct by decrpt
       // const isPasswordValid=await bcrypt.compare(password,user.password)
-       const isPasswordValid= await user.validatepassword(passwordbyuser);
+       const isPasswordValid= await user.validatepassword(password);
 
 
           if(!isPasswordValid){

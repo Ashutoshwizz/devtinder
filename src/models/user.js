@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const validator = require('validator');
+const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
 //creating schema
@@ -60,6 +61,8 @@ const bcrypt = require('bcrypt');
         //its referencing to the perticular user  and this keyword only works with normalfuncction not arrow functions
         const user=this;  
         const token=await jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
+
+        return token;
    
     }
 
