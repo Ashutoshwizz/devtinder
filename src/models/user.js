@@ -55,6 +55,10 @@ const bcrypt = require('bcrypt');
         timestamps:true
     });
 
+    //this makes search fast compund index
+    userschema.index({firstname:1,lastname:1});
+
+
     // its like helper method for this code  const token=await jwt.sign({_id:user._id},"Ashu123",{expiresIn:"1d"});
 
     userschema.methods.getjwt= async function(){

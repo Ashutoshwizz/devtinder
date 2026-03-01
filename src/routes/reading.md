@@ -36,7 +36,7 @@
 //     const data =req.body;
 
 //     const allowed_updates=["gender","age","lastname"];
-//     //it checks that every key fromm data is present in allowed updates
+//     //it checks that every key fromm data is present in allowed updates jab key value me ho to ese callkro
 //     const isupdatesallowed=Object.keys(data).every((k)=>{
 //      return  allowed_updates.includes(k);
 //     })
