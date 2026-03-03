@@ -25,8 +25,6 @@ const allowededits=["gender","age","lastname"];
     })
 
     return isallowededits;
-
-
 }
 
 const validateemail=(email)=>{

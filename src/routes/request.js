@@ -41,8 +41,6 @@ requestRouter.post("/request/send/:status/:touserid", userauth,async (req,res)=>
         }
           
 
-
-
         const connectionrequest=new connectionrequestmodel({
             fromuserid,
             touserid,status
@@ -61,5 +59,51 @@ requestRouter.post("/request/send/:status/:touserid", userauth,async (req,res)=>
     }
 
 })
+
+
+requestRouter.post("/request/review/:status/:requestid",userauth,async(req,res)=>{
+    try{
+        const status=req.params.status;
+        const requestid=req.params.requestid;
+        //const {status,requestid}=req.params;
+
+        const loggedinuser=req.user;
+        const allowedstatus=["accepted","rejected"];
+        if(!allowedstatus.includes(status)){
+            return res.status(400).json({message: "Invalid status"})
+                }
+    
+        const connectionrequest=await connectionrequestmodel.findOne({
+            _id:requestid
+            ,touserid:loggedinuser._id
+            ,
+            status:"interested"
+        })
+        if(!connectionrequest){
+            return res.status(400).json({
+                message:"connection req not found"
+            })
+        }
+
+        connectionrequest.status=status;
+        const data=await connectionrequest.save();
+
+        res.json({
+            message:"conncetion request "+status,data
+        })
+
+
+    }catch(err){
+        res.status(400).send("ERROR: "+err.message);
+    }    //ashu -> umesh
+    //is ashulogged in touserid
+    //status should be intrested
+    //request id should be valid
+
+    })
+    
+
+
+
 
 

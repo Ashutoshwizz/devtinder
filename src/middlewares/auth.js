@@ -1,7 +1,7 @@
 const jwt=require('jsonwebtoken');
 const User=require('../models/user');
 
-const userauth=async(req,res,next)   =>{
+const userauth=async(req,res,next)=>{
 
     try{
     //read the cookie from req cookie   
@@ -10,7 +10,7 @@ const userauth=async(req,res,next)   =>{
    const {  token }=cookies;
    //validating token
    if(!token){
-      throw new Error("invalid token");
+      return res.status(401).send("please login!!");
    } 
    //validating token from secret
 

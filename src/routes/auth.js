@@ -13,16 +13,27 @@ authRouter.post("/signup",async(req,res)=>{
 //first thing should be validating data
 validatesignupdata(req);
 
-//encrypt password
-const {firstname,lastname,email,password}=req.body;
+//decrypt password
+const {firstname,lastname,email,password,age,gender}=req.body;
 
 const passwordhash = await bcrypt.hash(password,10); 
 
  //creating a new instance of the user modal
- const user=new User({firstname,lastname,email,password: passwordhash});
+ const user=new User({firstname,lastname,email,password: passwordhash,age,gender});
+  
+  const saveduser=await user.save();
+  const token=await saveduser.getjwt();
 
-  await user.save();
-    res.send("user added sucsessfully");
+    res.cookie("token",token,{
+            expires:new Date(Date.now()+8*3600000)
+         });
+         
+    res.json({message:"user added sucsessfully",
+      saveduser
+    });
+    
+     
+         
  }catch(err){
     res.status(401).send("Error: "+err.message);
  }
@@ -64,7 +75,8 @@ authRouter.post("/login",async(req,res)=>{
 
 
          res.cookie("token",token);
-         res.send("login successfull!!");
+      
+         res.send("login successfull!!"+user);
       }
 
    }catch(err){

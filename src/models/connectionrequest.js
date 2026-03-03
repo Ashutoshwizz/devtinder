@@ -3,16 +3,19 @@ const mongoose=require('mongoose');
 const connectionrequestschema=new mongoose.Schema({
     fromuserid:{
         type:mongoose.Schema.Types.ObjectId,
-         required:true
+         required:true,
+         //this is buildingconnection to different collection
+         ref:"User"
 
     },
     touserid:{
         type:mongoose.Schema.Types.ObjectId,
-         required:true
+         required:true,
+         ref:"User"
     },status:{
         type:String,
         enum:{
-            values:[ 'ignored', 'interested', 'accepeted', 'rejected'],
+            values:[ 'ignored', 'interested', 'accepted', 'rejected'],
             message:`{value} is incorrect status`
         },
          required:true
@@ -22,9 +25,6 @@ const connectionrequestschema=new mongoose.Schema({
     timestamps:true
 }
 )
-
-
-
 
 //itis like a middleware it will be called evry time when connectionreq is saved
 connectionrequestschema.pre("save",function(){

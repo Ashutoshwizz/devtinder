@@ -1,17 +1,23 @@
 const express = require('express');
 const {connectdb}=require('./config/database');
 const cookieParser = require('cookie-parser');
+//const cors=require('cors');
 //instance of express js application
 const app=express();
 //when ever the cookie come it gets parsed
 app.use(cookieParser());
 //now this middleware will be for all routes
 app.use(express.json()); //converts json into javascript object
+//for connecting to react 
+//app.use(cors({
+// origin:"your front end",
+// credentials:true}));
 
 
 const authRouter=require('./routes/auth');
 const profileRouter=require('./routes/profile');
 const requestRouter=require('./routes/request');
+const userrouter = require('./routes/user');
 
 //connecing database
 connectdb()
@@ -31,6 +37,9 @@ app.listen(3000,()=>{
 app.use("/",authRouter); 
 app.use("/",profileRouter); 
 app.use("/",requestRouter); 
+app.use("/",userrouter);
+
+//******** inoderder to connect to different ip and port number you need to insstall corse */
 
  
 
